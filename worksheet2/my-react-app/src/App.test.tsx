@@ -14,3 +14,9 @@ describe('Addition', () => {
     expect(2 + 2).toBe(4);
   });
 });
+
+describe('Subtraction', () => {
+  it('knows that 2 minus 2 makes 0', () => {
+    expect(2 - 2).toBe(0);
+  });
+});

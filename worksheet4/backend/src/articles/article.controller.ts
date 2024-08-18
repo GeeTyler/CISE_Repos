@@ -8,9 +8,8 @@ import {
 } from '@nestjs/common';
 import { ArticleService } from './article.service';
 import { CreateArticleDto } from './create-article.dto';
-import { error } from 'console';
 
-@Controller('/')
+@Controller('/articles')
 export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
 
@@ -20,7 +19,7 @@ export class ArticleController {
   }
 
   // Get all articles
-  @Get('/Articles')
+  @Get('/')
   async findAll() {
     try {
       return this.articleService.findAll();
@@ -31,13 +30,12 @@ export class ArticleController {
           error: 'No Articles found',
         },
         HttpStatus.NOT_FOUND,
-        { cause: error },
       );
     }
   }
 
   // Create/add an article
-  @Post('/Articles/new')
+  @Post('/new')
   async addArticle(@Body() createArticleDto: CreateArticleDto) {
     try {
       await this.articleService.create(createArticleDto);
@@ -49,7 +47,6 @@ export class ArticleController {
           error: 'Unable to add this article',
         },
         HttpStatus.BAD_REQUEST,
-        { cause: error },
       );
     }
   }

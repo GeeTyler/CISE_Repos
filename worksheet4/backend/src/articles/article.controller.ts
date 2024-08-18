@@ -4,7 +4,6 @@ import {
   Get,
   HttpException,
   HttpStatus,
-  Param,
   Post,
 } from '@nestjs/common';
 import { ArticleService } from './article.service';
@@ -37,25 +36,8 @@ export class ArticleController {
     }
   }
 
-  // Get one article via id
-  @Get('/:id')
-  async findOne(@Param('id') id: string) {
-    try {
-      return this.articleService.findOne(id);
-    } catch {
-      throw new HttpException(
-        {
-          status: HttpStatus.NOT_FOUND,
-          error: 'No Article found',
-        },
-        HttpStatus.NOT_FOUND,
-        { cause: error },
-      );
-    }
-  }
-
   // Create/add an article
-  @Post('/')
+  @Post('/new')
   async addArticle(@Body() createArticleDto: CreateArticleDto) {
     try {
       await this.articleService.create(createArticleDto);

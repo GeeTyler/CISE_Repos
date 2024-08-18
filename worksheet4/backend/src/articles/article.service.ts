@@ -18,10 +18,6 @@ export class ArticleService {
     return await this.articleModel.find().exec();
   }
 
-  async findOne(id: string): Promise<Article> {
-    return await this.articleModel.findById(id).exec();
-  }
-
   async create(createArticleDto: CreateArticleDto): Promise<Article> {
     return await this.articleModel.create(createArticleDto);
   }

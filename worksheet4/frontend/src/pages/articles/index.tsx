@@ -1,17 +1,9 @@
-import { GetStaticProps, NextPage } from "next";
-import SortableTable from "../../components/table/SortableTable";
-import data from "../../utils/dummydata";
+// pages/articles/index.tsx
 
-interface ArticlesInterface {
-  id: string;
-  title: string;
-  authors: string;
-  source: string;
-  pubyear: string;
-  doi: string;
-  claim: string;
-  evidence: string;
-}
+import { GetStaticProps, NextPage } from "next";
+import axios from 'axios';
+import SortableTable from "../../components/table/SortableTable";
+import { ArticlesInterface } from "../../utils/types"; // Import the type from where it's defined
 
 type ArticlesProps = {
   articles: ArticlesInterface[];
@@ -38,24 +30,25 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 };
 
 export const getStaticProps: GetStaticProps<ArticlesProps> = async (_) => {
-  // Map the data to ensure all articles have consistent property names
-  const articles = data.map((article) => ({
-    id: article.id ?? article._id,
-    title: article.title,
-    authors: article.authors,
-    source: article.source,
-    pubyear: article.pubyear,
-    doi: article.doi,
-    claim: article.claim,
-    evidence: article.evidence,
-  }));
+  try {
+    // Fetch articles from the backend
+    const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/articles`);
+    const articles: ArticlesInterface[] = response.data;
 
-
-  return {
-    props: {
-      articles,
-    },
-  };
+    return {
+      props: {
+        articles,
+      },
+      revalidate: 10, // Optional: Regenerate the page every 10 seconds
+    };
+  } catch (error) {
+    console.error('Error fetching articles:', error);
+    return {
+      props: {
+        articles: [],
+      },
+    };
+  }
 };
 
 export default Articles;

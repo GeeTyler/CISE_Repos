@@ -10,7 +10,7 @@ import { ArticleService } from './article.service';
 import { CreateArticleDto } from './create-article.dto';
 import { error } from 'console';
 
-@Controller('/articles')
+@Controller('/')
 export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
 
@@ -20,7 +20,7 @@ export class ArticleController {
   }
 
   // Get all articles
-  @Get('/')
+  @Get('/Articles')
   async findAll() {
     try {
       return this.articleService.findAll();
@@ -37,7 +37,7 @@ export class ArticleController {
   }
 
   // Create/add an article
-  @Post('/new')
+  @Post('/Articles/new')
   async addArticle(@Body() createArticleDto: CreateArticleDto) {
     try {
       await this.articleService.create(createArticleDto);
